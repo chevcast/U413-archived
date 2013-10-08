@@ -19,7 +19,7 @@ var db = require('./db'),
 
 // Initialize node-static, a static file serving module.
 var file = new nodeStatic.Server('./public'),
-    port = 3000;
+    port = process.env.PORT || 3000;
 
 // Initialize the database module.
 db.initialize();
