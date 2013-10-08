@@ -1,0 +1,72 @@
+color = #000
+backColor = #fff
+errorColor = #f00
+warningColor = #ff0
+debugColor = #0ff
+linkColor = lighten(color, 50%)
+dimColor = darken(color, 50%)
+
+if light(backColor)
+    warningColor = darken(warningColor, 50%)
+    errorColor = darken(errorColor, 25%)
+    debugColor = darken(debugColor, 25%)
+
+body
+  padding: 25px
+  margin: 0px
+  font-family: Consolas, "Courier New", "Lucida Grande", Helvetica, Arial, sans-serif
+  color: color
+  background-color: backColor
+
+@media (max-width: 1000px)
+    body
+        padding: 0px
+
+#frame
+  max-width: 1000px
+
+a
+  color: linkColor
+
+.warn
+    color: warningColor
+
+.error
+    color: errorColor
+
+.debug
+    color: debugColor
+
+.inverted
+    color: backColor
+    background-color: color
+    padding: 0 5px 0 5px
+
+.bold
+    font-weight: bold
+
+.italic
+    font-style: italic
+
+.sub
+    font-style: italic
+    font-size: 12px
+    color: dimColor
+
+.small
+    font-size: 12px
+
+.dim
+    color: dimColor
+
+.underline
+    text-decoration: underline
+
+.title
+    font-size: 25px
+    font-weight: bold
+
+.comment
+    border-left: dotted 1px dimColor
+    padding: 15px
+    margin: 15px

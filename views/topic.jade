@@ -1,0 +1,15 @@
+div.topic(id = 'topic-' + topic.id)
+    div {#{topic.id}} #{topic.creator.username}>
+    div.title= topic.title
+    div.sub= moment(topic.date).fromNow()
+    if (topic.editedBy)
+        div.sub edited by #{topic.editedBy.username} #{moment(topic.editedDate).fromNow()}
+    div.sub= topic.tags.join(', ')
+    br
+    div.body= topic.body
+    br
+    div.sub #{comments.length} Comment(s)
+    div ---------------
+    div#comments
+        each comment in comments
+            include comment

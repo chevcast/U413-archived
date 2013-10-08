@@ -1,0 +1,20 @@
+{
+  "name": "application-name",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "jade": "*",
+    "shotgun": "*",
+    "shotgun-client": "*",
+    "node-static": "*",
+    "mongoose": "*",
+    "underscore": "*",
+    "extend": "*",
+    "async": "*",
+    "mongoose-auto-increment": "*",
+    "stylus": "~0.38.0"
+  }
+}
