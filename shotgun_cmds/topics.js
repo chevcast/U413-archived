@@ -12,7 +12,10 @@ exports.options = {
         description: "A comma-delimited list of tags.",
         validate: function (tags) {
             var regex = /^[\w-]{2,30}(, ?[\w-]{2,30}){0,9}$/i;
-            return regex.test(tags) ? true : "Tags must be a comma-delimited list with no more than ten items. (Regex: {0})".format(regex);
+            if (regex.test(tags))
+                return true;
+            else
+                return "Tags must be a comma-delimited list with no more than ten items. (Regex: {0})".format(regex);
         }
     }
 };

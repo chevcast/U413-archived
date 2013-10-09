@@ -21,9 +21,6 @@ var db = require('./db'),
 var file = new nodeStatic.Server('./public'),
     port = process.env.PORT || 3000;
 
-// Initialize the database module.
-db.initialize();
-
 // Register utilities.
 var utilitiesDir = path.resolve('utilities');
 fs.readdirSync(utilitiesDir).forEach(function (file) {
@@ -73,7 +70,9 @@ var shotgun = require('shotgun'),
 
 // Attach custom functions to the shell so they can be used in our command modules for U413.
 extend(shell, shellFunctions);
-shell.db = db;
+
+// Initialize the database module.
+db.initialize(shell);
 
 // Attach shotgun-client to the http server so it can listen for connections.
 shotgunClient.attach(server, shell);
