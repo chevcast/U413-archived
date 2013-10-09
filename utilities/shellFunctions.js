@@ -54,12 +54,12 @@ exports.deleteTopic = function (topicId) {
 };
 
 // Allows in-place addition of new comments.
-exports.newComment = function (commentId, locals) {
+exports.newComment = function (topicId, locals) {
     var shell = this,
         commentView = shell.renderViewToString('comment', locals);
     return shell.sendToAll({
         newComment: {
-            id: commentId,
+            id: topicId,
             html: commentView
         }
     });
