@@ -19,34 +19,46 @@ exports.options = {
             return shell.getVar('lastTopic');
         }
     },
-    dontShow: {
-        aliases: ['d'],
-        description: "Don't display the topic after saving the reply."
+    quote: {
+        aliases: ['q'],
+        prompt: "Enter the ID of the comment you wish to quote.",
+        description: "Allows you to quickly quote another comment.",
+        validate: /^\d+$/
     }
 };
 
 exports.invoke = function(shell, options) {
-    shell.getCurrentUser(function (user) {
-        var newComment = new shell.db.Comment({
-            creator: user,
-            topic: options.topicId,
-            body: options.content
-        });
-        newComment.save(function (err) {
-            if (err) return shell.error(err);
-            newComment.populate('creator editedBy topic', function (err, comment) {
+    function doReply(quoteComment) {
+        shell.getCurrentUser(function (user) {
+            var newComment = new shell.db.Comment({
+                creator: user,
+                topic: options.topicId,
+                body: quoteComment ? quoteComment.content + '\n\n' + options.content : options.content
+            });
+            newComment.save(function (err) {
                 if (err) return shell.error(err);
-                comment.topic.commentCount++;
-                comment.topic.lastCommentDate = comment.date;
-                comment.topic.save(function (err) {
+                newComment.populate('creator editedBy topic', function (err, comment) {
                     if (err) return shell.error(err);
-                    shell.newComment(comment.id, {
-                        comment: comment,
-                        moment: require('moment')
+                    comment.topic.commentCount++;
+                    comment.topic.lastCommentDate = comment.date;
+                    comment.topic.save(function (err) {
+                        if (err) return shell.error(err);
+                        shell.newComment(comment.id, {
+                            comment: comment,
+                            moment: require('moment')
+                        });
+                        shell.log("Comment {{0}} saved successfully.".format(newComment.id));
                     });
-                    shell.log("Comment {{0}} saved successfully.".format(newComment.id));
                 });
             });
         });
-    });
+    }
+    if (options.quote)
+        shell.db.Comment.findById(options.quote, function (err, quoteComment) {
+            if (err) return shell.error(err);
+            if (!quoteComment) return shell.error("No comment with ID {{0}} exists.".format(options.quote));
+            doReply(quoteComment);
+        });
+    else
+        doReply();
 };
