@@ -34,13 +34,18 @@ exports.invoke = function(shell, options) {
         });
         newComment.save(function (err) {
             if (err) return shell.error(err);
-            newComment.populate('creator editedBy', function (err, comment) {
+            newComment.populate('creator editedBy topic', function (err, comment) {
                 if (err) return shell.error(err);
-                shell.newComment(newComment.id, {
-                    comment: comment,
-                    moment: require('moment')
+                comment.topic.commentCount++;
+                comment.topic.lastCommentDate = comment.date;
+                comment.topic.save(function (err) {
+                    if (err) return shell.error(err);
+                    shell.newComment(comment.id, {
+                        comment: comment,
+                        moment: require('moment')
+                    });
+                    shell.log("Comment {{0}} saved successfully.".format(newComment.id));
                 });
-                shell.log("Comment {{0}} saved successfully.".format(newComment.id));
             });
         });
     });

@@ -50,10 +50,10 @@ $(function () {
             if (typeof(data.deleteComment) !== 'undefined')
                 $('#comment-' + data.deleteComment).slideUp();
 
-            // If we clear the display then remove the lastTopic context variable since that topic will obviously
-            // no longer be visible to the user.
-            if (data.clearDisplay)
-                api.clientShell.delVar('lastTopic');
+//            // If we clear the display then remove the lastTopic context variable since that topic will obviously
+//            // no longer be visible to the user.
+//            if (data.clearDisplay)
+//                api.clientShell.delVar('lastTopic');
         })
         .execute('initialize');
 });

@@ -10,7 +10,9 @@ exports.createModel = function (modelName) {
         date: { type: Date, default: Date.now },
         editedDate: Date,
         editedBy: { type: Schema.Types.ObjectId, ref: 'User' },
-        tags: [String]
+        tags: [String],
+        commentCount: { type: Number, default: 0 },
+        lastCommentDate: { type: Date, default: Date.now }
     });
     topicSchema.plugin(autoIncrement, modelName);
     return mongoose.model(modelName, topicSchema);

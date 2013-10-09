@@ -8,7 +8,7 @@ div.topic(id = 'topic-' + topic.id)
     br
     div.body= topic.body
     br
-    div.sub #{comments.length} Comment(s)
+    div.sub #{comments.length} #{comments.length === 1 ? 'Comment' : 'Comments'}
     div ---------------
     div#comments
         each comment in comments

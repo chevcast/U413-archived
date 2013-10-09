@@ -41,7 +41,7 @@ exports.invoke = function(shell, options) {
             creator: user,
             title: options.title,
             body: options.body,
-            tags: options.tags.replace(/, /g, ',').split(',')
+            tags: options.tags.toString().replace(/, /g, ',').split(',')
         });
         newTopic.save(function (err) {
             if (err) return shell.error(err);

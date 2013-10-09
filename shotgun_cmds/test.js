@@ -11,9 +11,8 @@ exports.roles = 'admin';
 exports.hidden = true;
 
 exports.invoke = function (shell, options) {
-    var user = shell.getVar('currentUser');
-    console.log(user.isModOrAdmin.toString());
-    shell.getCurrentUser(function (user) {
-        console.log(user.isModOrAdmin.toString());
+    shell.db.Comment.findOne({ topic: 3 }).sort('-date').exec(function (err, comment) {
+        if (err) return shell.error(err);
+        console.log(comment);
     });
 };

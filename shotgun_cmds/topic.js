@@ -41,7 +41,5 @@ exports.invoke = function(shell, options) {
                         moment: moment
                     });
                 });
-
-            //todo: implement --last.
         });
 };
