@@ -39,15 +39,16 @@ $(function () {
                     api.clientShell.warn("The topic you are currently viewing has been deleted.");
 
             if (data.newComment) {
-                console.log('newComment');
-                var $newComment = $(data.newComment.html),
-                    $lastComment = $('[id^=comment-]').last(),
-                    $comments = $('#comments');
-                $newComment.hide().appendTo($comments).slideDown();
-                // Check if the last comment was visible in the viewport. If so, scroll to the new comment.
-                if (elementInViewport($lastComment[0]) || elementInViewport($comments[0])) {
-                    console.log('scrolling');
-                    api.ui.$scrollElement.scrollTo($newComment);
+                if ($('#topic-' + data.newComment.id).length > 0) {
+                    var $newComment = $(data.newComment.html),
+                        $lastComment = $('[id^=comment-]').last(),
+                        $comments = $('#comments');
+                    $newComment.hide().appendTo($comments).slideDown();
+                    // Check if the last comment was visible in the viewport. If so, scroll to the new comment.
+                    if (elementInViewport($lastComment[0]) || elementInViewport($comments[0])) {
+                        console.log('scrolling');
+                        api.ui.$scrollElement.scrollTo($newComment);
+                    }
                 }
             }
 
