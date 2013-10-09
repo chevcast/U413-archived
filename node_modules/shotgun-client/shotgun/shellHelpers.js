@@ -31,5 +31,11 @@ module.exports = exports = {
         var shell = this,
             socket = shell.getVar('socket');
         socket.broadcast.emit('data', data);
+    },
+
+    // Create a shell send function for multi line inputs.
+    multiLine: function () {
+        var shell = this;
+        shell.send({ multiLine: true });
     }
 };
