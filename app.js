@@ -22,10 +22,7 @@ var file = new nodeStatic.Server('./public'),
     port = process.env.PORT || 3000;
 
 // Register utilities.
-var utilitiesDir = path.resolve('utilities');
-fs.readdirSync(utilitiesDir).forEach(function (file) {
-    if (~file.indexOf('.js')) require(path.join(utilitiesDir, file));
-});
+require('./utilities/prototypeHelpers');
 
 // Create basic http server.
 var server = http.createServer(function (request, response) {

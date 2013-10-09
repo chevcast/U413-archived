@@ -37,11 +37,13 @@ exports.options = {
 
 exports.invoke = function(shell, options) {
     shell.getCurrentUser(function (user) {
+        var tags = options.tags.toLowerCase().replace(/, /g, ',').split(',');
+
         var newTopic = new shell.db.Topic({
             creator: user,
             title: options.title,
             body: options.body,
-            tags: options.tags.toString().replace(/, /g, ',').split(',')
+            tags: tags.unique
         });
         newTopic.save(function (err) {
             if (err) return shell.error(err);

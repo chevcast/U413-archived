@@ -24,7 +24,7 @@ exports.invoke = function (shell, options) {
     shell.clearDisplay();
     var query = shell.db.Topic.find({});
     if (options.hasOwnProperty('tags')) {
-        var tags = options.tags.toString().replace(/, /, ',').split(',');
+        var tags = options.tags.toLowerCase().replace(/, /, ',').split(',').unique;
         query = query.where('tags').in(tags);
         shell.log('Topics tagged: {0}'.format(tags.join(', ')), { bold: true });
         shell.log();
