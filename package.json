@@ -15,6 +15,7 @@
     "extend": "*",
     "async": "*",
     "mongoose-auto-increment": "*",
-    "stylus": "~0.38.0"
+    "stylus": "*",
+    "moment": "*"
   }
 }

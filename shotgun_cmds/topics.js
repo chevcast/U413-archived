@@ -24,9 +24,9 @@ exports.invoke = function (shell, options) {
     shell.clearDisplay();
     var query = shell.db.Topic.find({});
     if (options.hasOwnProperty('tags')) {
-        var tags = options.tags.toLowerCase().replace(/, /, ',').split(',').unique;
+        var tags = options.tags.toLowerCase().replace(/, /, ',').split(',').unique();
         query = query.where('tags').in(tags);
-        shell.log('Topics tagged: {0}'.format(tags.join(', ')), { bold: true });
+        shell.log('Topics tagged: {0}'.format(tags.join(',')), { bold: true });
         shell.log();
     }
     query
@@ -43,7 +43,7 @@ exports.invoke = function (shell, options) {
                     '{0} by {1}'.format(moment(topic.date).fromNow(), topic.creator.username),
                     { cssClass: 'sub', dontType: true }
                 );
-                shell.log(topic.tags.join(', '), { cssClass: 'sub', dontType: true });
+                shell.log(topic.tags.join(','), { cssClass: 'sub', dontType: true });
                 if (topic.commentCount > 0)
                     shell.log(
                         '{0} {1}'.format(topic.commentCount, topic.commentCount === 1 ? 'Comment' : 'Comments'),

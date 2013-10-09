@@ -4,7 +4,7 @@ div.topic(id = 'topic-' + topic.id)
     div.sub= moment(topic.date).fromNow()
     if (topic.editedBy)
         div.sub edited by #{topic.editedBy.username} #{moment(topic.editedDate).fromNow()}
-    div.sub= topic.tags.join(', ')
+    div.sub= topic.tags.join(',')
     br
     div.body= topic.body
     br

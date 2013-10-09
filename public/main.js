@@ -33,20 +33,27 @@ $(function () {
             // Update comments/topics that are visible on the page if they change while being viewed.
             if (data.modifyTopic)
                 $('#topic-' + data.modifyTopic.id).replaceWith(data.modifyTopic.html);
+
             if (typeof(data.deleteTopic) !== 'undefined')
                 if ($('#topic-' + data.deleteTopic).length > 0)
                     api.clientShell.warn("The topic you are currently viewing has been deleted.");
+
             if (data.newComment) {
+                console.log('newComment');
                 var $newComment = $(data.newComment.html),
                     $lastComment = $('[id^=comment-]').last(),
                     $comments = $('#comments');
                 $newComment.hide().appendTo($comments).slideDown();
                 // Check if the last comment was visible in the viewport. If so, scroll to the new comment.
-                if (elementInViewport($lastComment[0]) || elementInViewport($comments[0]))
+                if (elementInViewport($lastComment[0]) || elementInViewport($comments[0])) {
+                    console.log('scrolling');
                     api.ui.$scrollElement.scrollTo($newComment);
+                }
             }
+
             if (data.modifyComment)
                 $('#comment-' + data.modifyComment.id).replaceWith(data.modifyComment.html);
+
             if (typeof(data.deleteComment) !== 'undefined')
                 $('#comment-' + data.deleteComment).slideUp();
 

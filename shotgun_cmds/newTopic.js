@@ -43,7 +43,7 @@ exports.invoke = function(shell, options) {
             creator: user,
             title: options.title,
             body: options.body,
-            tags: tags.unique
+            tags: tags.unique()
         });
         newTopic.save(function (err) {
             if (err) return shell.error(err);

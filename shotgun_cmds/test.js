@@ -11,5 +11,5 @@ exports.roles = 'admin';
 exports.hidden = true;
 
 exports.invoke = function (shell, options) {
-    shell.multiLine();
+    console.log(shell.cmds);
 };
