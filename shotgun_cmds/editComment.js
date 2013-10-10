@@ -28,7 +28,7 @@ exports.invoke = function (shell, options) {
                 return shell.error("Comment {{0}} does not belong to you.".format(options.id));
             // If user did not supply content already then set the CLI text to edit and prompt for comment content.
             if (!options.content) {
-                shell.edit(comment.body).multiLine();
+                shell.multiLine().edit(comment.body);
                 shell.log("Modify comment {{0}} content.".format(options.id));
                 shell.setPrompt('content', 'editComment', options);
             }
