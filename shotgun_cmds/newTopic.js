@@ -16,6 +16,7 @@ exports.options = {
         required: true,
         noName: true,
         prompt: "Please type the body of your topic.",
+        multiLinePrompt: true,
         hidden: true,
         validate: /^.{1,10000}$/i
     },

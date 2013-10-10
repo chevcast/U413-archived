@@ -6,7 +6,7 @@ div.topic(id = 'topic-' + topic.id)
         div.sub edited by #{topic.editedBy.username} #{moment(topic.editedDate).fromNow()}
     div.sub= topic.tags.join(',')
     br
-    div.body= topic.body
+    div.body= topic.body.replace(/\n/g, '<br />')
     br
     div.sub #{comments.length} #{comments.length === 1 ? 'Comment' : 'Comments'}
     div ---------------

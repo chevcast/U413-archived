@@ -1,7 +1,7 @@
 div.comment(id = 'comment-' + comment.id)
     div.small {#{comment.id}} #{comment.creator.username}>
     br
-    div.body= comment.body
+    div.body!= comment.body.replace(/\n/g, '<br />')
     br
     div.sub= moment(comment.date).fromNow()
     if (comment.editedBy)
