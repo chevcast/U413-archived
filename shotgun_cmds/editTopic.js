@@ -49,7 +49,7 @@ exports.invoke = function (shell, options) {
                 if (topic.creator.id != currentUser.id && !currentUser.isModOrAdmin())
                     return shell.error("Topic {{0}} does not belong to you.".format(options.id));
                 if (!options.title) {
-                    shell.edit(topic.title);
+                    shell.edit(topic.title).multiLine();
                     shell.log("Modify topic {{0}} title.".format(options.id));
                     shell.setPrompt('title', 'editTopic', options);
                 }
