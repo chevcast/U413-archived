@@ -23,7 +23,7 @@ exports.options = {
     content: {
         noName: true,
         hidden: true,
-        validate: /^.{1,10000}$/i
+        validate: /^.{1,10000}/i
     },
     tags: {
         noName: true,

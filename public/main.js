@@ -10,6 +10,15 @@ function elementInViewport(el) {
 }
 
 $(function () {
+
+    $.easing.elasout = function(x, t, b, c, d) {
+        var s=1.70158;var p=0;var a=c;
+        if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+        if (a < Math.abs(c)) { a=c; var s=p/4; }
+        else var s = p/(2*Math.PI) * Math.asin (c/a);
+        return a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b;
+    };
+
     var api = $('#frame')
         .shotgunConsole({
             // The element that will scroll is the body, even though we're creating the console on a different element.
@@ -35,19 +44,18 @@ $(function () {
                     var $newComment = $(data.newComment.html),
                         $lastComment = $('[id^=comment-]').last(),
                         $comments = $('#comments');
-                    $newComment.hide().appendTo($comments).slideDown();
-
-                    // IF:
-                    // - there are comments and the last comment is visible in browser viewport
-                    // OR
-                    // - there are no comments and the comment container is visible in browser viewport
-                    // THEN
-                    // scroll to our newly added comment.
-                    if (($lastComment.length > 0 && elementInViewport($lastComment[0]))
-                        || ($lastComment.length === 0 && elementInViewport($comments[0]))) {
-                        if (elementInViewport($comments[0])) console.log("Comments container is visible.");
-                        api.ui.$scrollElement.scrollTo($newComment);
-                    }
+                    $newComment.hide().appendTo($comments).slideDown('fast', function () {
+                        // IF:
+                        // - the entire comments container is visible in the viewport (meaning little or no comments)
+                        // OR
+                        // - there are comments and the last comment is visible in the viewport
+                        // THEN
+                        // scroll to our newly added comment.
+                        if (elementInViewport($comments[0])
+                            || ($lastComment.length > 0 && elementInViewport($lastComment[0]))) {
+                            api.ui.$scrollElement.scrollTo($lastComment, 750, { easing: 'elasout' });
+                        }
+                    });
                 }
             }
 
@@ -55,12 +63,7 @@ $(function () {
                 $('#comment-' + data.modifyComment.id).replaceWith(data.modifyComment.html);
 
             if (typeof(data.deleteComment) !== 'undefined')
-                $('#comment-' + data.deleteComment).slideUp();
-
-//            // If we clear the display then remove the lastTopic context variable since that topic will obviously
-//            // no longer be visible to the user.
-//            if (data.clearDisplay)
-//                api.clientShell.delVar('lastTopic');
+                $('#comment-' + data.deleteComment).slideUp('fast');
         })
         .execute('initialize');
 });

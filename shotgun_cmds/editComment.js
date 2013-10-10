@@ -15,7 +15,7 @@ exports.options = {
     content: {
         noName: true,
         hidden: true,
-        validate: /^.{1,5000}$/i
+        validate: /^.{1,5000}/i
     }
 };
 
