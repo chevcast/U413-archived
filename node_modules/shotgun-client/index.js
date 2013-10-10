@@ -2,7 +2,8 @@ var sio = require('socket.io'),
     fs = require('fs'),
     path = require('path'),
     extend = require('extend'),
-    shellHelpers = require('./shotgun/shellHelpers');
+    shellHelpers = require('./utilities/shellHelpers'),
+    shellSettings = require('./utilities/shellSettings');
 
 exports.attach = function (server) {
 
@@ -60,6 +61,9 @@ exports.attach = function (server) {
 
         // Attach shotgun-client shell helpers to the shell instance so they are available to our command modules.
         extend(shell, shellHelpers);
+
+        // Attach shotgun-client shell settings to the shell.
+        extend(shell.settings, shellSettings);
 
         // Setup socket.io namespace for the current shell.
         io.of('/' + shell.settings.namespace)

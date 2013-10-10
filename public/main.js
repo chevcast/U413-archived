@@ -1,21 +1,12 @@
-function elementInViewport(elem) {
-    if (!elem)
-        return false;
-    var top = elem.offsetTop;
-    var left = elem.offsetLeft;
-    var width = elem.offsetWidth;
-    var height = elem.offsetHeight;
+function elementInViewport(el) {
+    var rect = el.getBoundingClientRect();
 
-    while(elem.offsetParent) {
-        elem = elem.offsetParent;
-        top += elem.offsetTop;
-        left += elem.offsetLeft;
-    }
-
-    return (top < (window.pageYOffset + window.innerHeight) &&
-        left < (window.pageXOffset + window.innerWidth) &&
-        (top + height) > window.pageYOffset &&
-        (left + width) > window.pageXOffset);
+    return (
+        rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document. documentElement.clientHeight) && /*or $(window).height() */
+            rect.right <= (window.innerWidth || document. documentElement.clientWidth) /*or $(window).width() */
+        );
 }
 
 $(function () {
@@ -39,14 +30,22 @@ $(function () {
                     api.clientShell.warn("The topic you are currently viewing has been deleted.");
 
             if (data.newComment) {
-                if ($('#topic-' + data.newComment.id).length > 0) {
+                var $topic = $('#topic-' + data.newComment.topicId);
+                if ($topic.length > 0) {
                     var $newComment = $(data.newComment.html),
                         $lastComment = $('[id^=comment-]').last(),
                         $comments = $('#comments');
                     $newComment.hide().appendTo($comments).slideDown();
-                    // Check if the last comment was visible in the viewport. If so, scroll to the new comment.
-                    if (elementInViewport($lastComment[0]) || elementInViewport($comments[0])) {
-                        console.log('scrolling');
+
+                    // IF:
+                    // - there are comments and the last comment is visible in browser viewport
+                    // OR
+                    // - there are no comments and the comment container is visible in browser viewport
+                    // THEN
+                    // scroll to our newly added comment.
+                    if (($lastComment.length > 0 && elementInViewport($lastComment[0]))
+                        || ($lastComment.length === 0 && elementInViewport($comments[0]))) {
+                        if (elementInViewport($comments[0])) console.log("Comments container is visible.");
                         api.ui.$scrollElement.scrollTo($newComment);
                     }
                 }

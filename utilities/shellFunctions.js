@@ -59,7 +59,7 @@ exports.newComment = function (topicId, locals) {
         commentView = shell.renderViewToString('comment', locals);
     return shell.sendToAll({
         newComment: {
-            id: topicId,
+            topicId: topicId,
             html: commentView
         }
     });

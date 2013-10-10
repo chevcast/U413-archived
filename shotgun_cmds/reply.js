@@ -7,7 +7,8 @@ exports.options = {
         noName: true,
         required: true,
         prompt: "Please enter your reply.",
-        validate: /^.{1,5000}$/i,
+        multiLinePrompt: true,
+        validate: /^.{1,5000}/i,
         hidden: true
     },
     topicId: {
@@ -43,11 +44,11 @@ exports.invoke = function(shell, options) {
                     comment.topic.lastCommentDate = comment.date;
                     comment.topic.save(function (err) {
                         if (err) return shell.error(err);
-                        shell.newComment(comment.id, {
+                        shell.newComment(comment.topic.id, {
                             comment: comment,
                             moment: require('moment')
                         });
-                        shell.log("Comment {{0}} saved successfully.".format(newComment.id));
+                        //shell.log("Comment {{0}} saved successfully.".format(newComment.id));
                     });
                 });
             });

@@ -44,7 +44,7 @@ exports.invoke = function (shell, options) {
                         .exec(function (err, prevComment) {
                             if (err) return shell.error(err);
                             comment.topic.commentCount--;
-                            comment.topic.lastCommentDate = prevComment.date;
+                            comment.topic.lastCommentDate = prevComment ? prevComment.date : comment.topic.date;
                             comment.topic.save(function (err) {
                                 if (err) return shell.error(err);
                                 shell.deleteComment(options.id);
