@@ -12,6 +12,9 @@ var jade = require('jade'),
     moment = require('moment')
     marked = require('marked');
 
+// By default we will not allow any user-supplied HTML. Only markup generated from marked will be allowed.
+marked.setOptions({ sanitize: true });
+
 // Renders a Jade view from the views directory and returns it as a string.
 exports.renderViewToString = function (name, locals) {
     var pathToTemplate = path.resolve('views', name + '.jade'),
