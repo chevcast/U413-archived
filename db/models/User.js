@@ -2,8 +2,7 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-exports.createModel = function (modelName) {
-    // Schema
+exports.createSchema = function () {
     var userSchema = new Schema({
         username: String,
         email: String,
@@ -17,5 +16,5 @@ exports.createModel = function (modelName) {
         return this.roles.indexOf('mod') + this.roles.indexOf('admin') != -2;
     });
 
-    return mongoose.model(modelName, userSchema);
+    return userSchema;
 };

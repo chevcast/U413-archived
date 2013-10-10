@@ -3,22 +3,24 @@ var mongoose = require('mongoose'),
     path = require('path');
 
 module.exports = exports = {
-    initialize: function (shell) {
-        shell.db = {};
-        mongoose.connect(process.env.CONNECTION_STRING.toString());
-        mongoose.connection.on('error', function (err) {
-            console.error(err);
-            shell.warn("Waking up database. Wait a moment and try again :)");
+    initialize: function (callback) {
+        var models = {};
+        var conn = mongoose.createConnection(process.env.CONNECTION_STRING.toString(), {
+            server: {
+                socketOptions: { keepAlive: 1 }
+            }
         });
-        mongoose.connection.once('open', function callback() {
+        conn.on('error', console.error);
+        conn.once('open', function () {
             // Find and load all Mongoose models from the models directory.
             fs.readdirSync(path.join(__dirname, 'models')).forEach(function (file) {
                 if (path.extname(file) === '.js') {
                     var modelName = path.basename(file.replace(path.extname(file), ''));
-                    var model = require(path.join(__dirname, 'models', file)).createModel(modelName);
-                    shell.db[modelName] = model;
+                    var schema = require(path.join(__dirname, 'models', file)).createSchema();
+                    models[modelName] = conn.model(modelName, schema);
                 }
             });
+            callback(models);
         });
     }
 };
