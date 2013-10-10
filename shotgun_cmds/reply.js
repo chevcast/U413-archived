@@ -34,7 +34,12 @@ exports.invoke = function(shell, options) {
             var newComment = new shell.db.Comment({
                 creator: user,
                 topic: options.topicId,
-                body: quoteComment ? quoteComment.content + '\n\n' + options.content : options.content
+                body: quoteComment ? "> {{0}} {1}>\n>\n> {2}\n\n{3}".format(
+                        quoteComment.id,
+                        quoteComment.creator.username,
+                        quoteComment.body.replace(/\n/g, '\n> '),
+                        options.content
+                    ) : options.content
             });
             newComment.save(function (err) {
                 if (err) return shell.error(err);
@@ -59,12 +64,15 @@ exports.invoke = function(shell, options) {
             });
         });
     }
-    if (options.quote)
-        shell.db.Comment.findById(options.quote, function (err, quoteComment) {
-            if (err) return shell.error(err);
-            if (!quoteComment) return shell.error("No comment with ID {{0}} exists.".format(options.quote));
-            doReply(quoteComment);
-        });
+    if (options.hasOwnProperty('quote'))
+        shell.db.Comment
+            .findById(options.quote)
+            .populate('creator')
+            .exec(function (err, quoteComment) {
+                if (err) return shell.error(err);
+                if (!quoteComment) return shell.error("No comment with ID {{0}} exists.".format(options.quote));
+                doReply(quoteComment);
+            });
     else
         doReply();
 };

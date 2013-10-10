@@ -30,8 +30,9 @@ exports.invoke = function (shell, options) {
         shell.warn("Are you sure you want to delete topic {{0}}? (Y/N)".format(options.id));
         return shell.setPrompt('confirm', 'delTopic', options, 'Are you sure?');
     }
-    shell.db.Topic.findByIdAndRemove(options.id, function (err) {
+    shell.db.Topic.findByIdAndRemove(options.id, function (err, topic) {
         if (err) return shell.error(err);
+        if (!topic) return shell.error("No topic with ID {{0}} exists.".format(options.id));
         shell.db.Comment.where('topic').equals(options.id).remove(function (err) {
             if (err) return shell.error(err);
             shell.notifyTopicDeleted({ id: options.id });

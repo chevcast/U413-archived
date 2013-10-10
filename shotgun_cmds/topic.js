@@ -35,11 +35,7 @@ exports.invoke = function(shell, options) {
                 .populate('creator editedBy')
                 .sort('date')
                 .exec(function (err, comments) {
-                    shell.view('topic', {
-                        topic: topic,
-                        comments: comments,
-                        moment: moment
-                    });
+                    shell.view('topic', { topic: topic, comments: comments });
                 });
         });
 };

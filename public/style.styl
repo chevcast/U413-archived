@@ -5,11 +5,15 @@ warningColor = #ff0
 debugColor = #0ff
 linkColor = lighten(color, 50%)
 dimColor = darken(color, 50%)
+quoteColor = lighten(color, 95%)
 
 if light(backColor)
     warningColor = darken(warningColor, 50%)
     errorColor = darken(errorColor, 25%)
     debugColor = darken(debugColor, 25%)
+
+if (light(color))
+    quoteColor = darken(color, 95%)
 
 body
   padding: 25px
@@ -72,3 +76,18 @@ a
 
 .multi-line
     border-color: dimColor !important
+
+blockquote
+    border: dotted 1px dimColor
+    padding: 15px
+    margin: 0
+    display: inline-block
+    background-color: quoteColor
+
+pre > code
+    display: inline-block
+    padding: 15px
+
+code
+    border: dashed 1px dimColor
+    padding: 0 3px 0 3px

@@ -6,7 +6,7 @@ div.topic(id = 'topic-' + topic.id)
         div.sub edited by #{topic.editedBy.username} #{moment(topic.editedDate).fromNow()}
     div.sub= topic.tags.join(',')
     br
-    div.body!= topic.body.replace(/\n/g, '<br />')
+    div.body!= marked(topic.body)
     br
     div.sub
         span#commentCount= comments.length

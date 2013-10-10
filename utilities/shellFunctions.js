@@ -7,7 +7,10 @@
 
 var jade = require('jade'),
     fs = require('fs'),
-    path = require('path');
+    path = require('path'),
+    extend = require('extend'),
+    moment = require('moment')
+    marked = require('marked');
 
 // Renders a Jade view from the views directory and returns it as a string.
 exports.renderViewToString = function (name, locals) {
@@ -18,8 +21,8 @@ exports.renderViewToString = function (name, locals) {
 
 // Obtains a Jade view as a string and sends it to the client.
 exports.view = function (name, locals) {
-    var shell = this;
-    return shell.log(shell.renderViewToString(name, locals), { dontType: true });
+    extend(locals, { moment: moment, marked: marked });
+    return this.log(this.renderViewToString(name, locals), { dontType: true });
 };
 
 // Retrieves the currently authenticated user.

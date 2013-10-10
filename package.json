@@ -16,6 +16,7 @@
     "async": "*",
     "mongoose-auto-increment": "*",
     "stylus": "*",
-    "moment": "*"
+    "moment": "*",
+    "marked": "*"
   }
 }

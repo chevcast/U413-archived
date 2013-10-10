@@ -9,6 +9,15 @@ function elementInViewport(el) {
         );
 }
 
+function highlightSyntax() {
+    var $code = $('code');
+    $code.each(function () {
+        var $this = $(this);
+        if (!$this.hasClass('prettyprint')) $this.addClass('prettyprint');
+    });
+    prettyPrint();
+}
+
 $(function () {
 
     $.easing.elasout = function(x, t, b, c, d) {
@@ -35,8 +44,10 @@ $(function () {
                eval(data.exec);
 
             // Update comments/topics that are visible on the page if they change while being viewed.
-            if (data.modifiedTopic)
+            if (data.modifiedTopic) {
                 $('#topic-' + data.modifiedTopic.id).replaceWith(data.modifiedTopic.html);
+                highlightSyntax();
+            }
 
             if (data.deletedTopic)
                 if ($('#topic-' + data.deletedTopic.id).length > 0)
@@ -50,6 +61,7 @@ $(function () {
                         $comments = $('#comments');
                     $('#commentCount').text(data.newComment.commentCount);
                     $newComment.hide().appendTo($comments).slideDown('fast', function () {
+                        highlightSyntax();
                         // IF:
                         // - the entire comments container is visible in the viewport (meaning little or no comments)
                         // OR
@@ -64,13 +76,18 @@ $(function () {
                 }
             }
 
-            if (data.modifiedComment)
+            if (data.modifiedComment) {
                 $('#comment-' + data.modifiedComment.id).replaceWith(data.modifiedComment.html);
+                highlightSyntax();
+            }
 
             if (data.deletedComment) {
                 $('#commentCount').text(data.deletedComment.commentCount);
-                $('#comment-' + data.deletedComment.id).slideUp('fast');
+                $('#comment-' + data.deletedComment.id).slideUp('fast', highlightSyntax);
             }
+
+            if (data.line)
+                highlightSyntax();
         })
         .execute('initialize');
 });
