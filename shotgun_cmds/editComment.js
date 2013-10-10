@@ -41,10 +41,15 @@ exports.invoke = function (shell, options) {
                     if (err) return shell.error(err);
                     comment.populate('creator editedBy', function (err, comment) {
                         if (err) return shell.error(err);
-                        shell.modifyComment(options.id, {
-                            comment: comment,
-                            moment: require('moment')
-                        });
+                        shell.renderModifiedComment(
+                            {
+                                id: options.id
+                            },
+                            {
+                                comment: comment,
+                                moment: require('moment')
+                            }
+                        );
                         shell.log("Comment {{0}} updated successfully.".format(options.id));
                     });
                 });

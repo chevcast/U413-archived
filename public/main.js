@@ -30,12 +30,13 @@ $(function () {
             document.title += context.currentUser ? context.currentUser.username : "Terminal";
         })
         .onData(function (data) {
+            console.log(data);
             // Update comments/topics that are visible on the page if they change while being viewed.
-            if (data.modifyTopic)
-                $('#topic-' + data.modifyTopic.id).replaceWith(data.modifyTopic.html);
+            if (data.modifiedTopic)
+                $('#topic-' + data.modifiedTopic.id).replaceWith(data.modifiedTopic.html);
 
-            if (typeof(data.deleteTopic) !== 'undefined')
-                if ($('#topic-' + data.deleteTopic).length > 0)
+            if (data.deletedTopic)
+                if ($('#topic-' + data.deletedTopic.id).length > 0)
                     api.clientShell.warn("The topic you are currently viewing has been deleted.");
 
             if (data.newComment) {
@@ -44,6 +45,7 @@ $(function () {
                     var $newComment = $(data.newComment.html),
                         $lastComment = $('[id^=comment-]').last(),
                         $comments = $('#comments');
+                    $('#commentCount').text(data.newComment.commentCount);
                     $newComment.hide().appendTo($comments).slideDown('fast', function () {
                         // IF:
                         // - the entire comments container is visible in the viewport (meaning little or no comments)
@@ -59,11 +61,13 @@ $(function () {
                 }
             }
 
-            if (data.modifyComment)
-                $('#comment-' + data.modifyComment.id).replaceWith(data.modifyComment.html);
+            if (data.modifiedComment)
+                $('#comment-' + data.modifiedComment.id).replaceWith(data.modifiedComment.html);
 
-            if (typeof(data.deleteComment) !== 'undefined')
-                $('#comment-' + data.deleteComment).slideUp('fast');
+            if (data.deletedComment) {
+                $('#commentCount').text(data.deletedComment.commentCount);
+                $('#comment-' + data.deletedComment.id).slideUp('fast');
+            }
         })
         .execute('initialize');
 });

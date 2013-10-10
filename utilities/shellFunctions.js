@@ -36,51 +36,31 @@ exports.getCurrentUser = function (callback) {
 };
 
 // Allows in-place modification of topics.
-exports.modifyTopic = function (topicId, locals) {
-    var shell = this,
-        topicView = shell.renderViewToString('topic', locals);
-    return shell.sendToAll({
-        modifyTopic: {
-            id: topicId,
-            html: topicView
-        }
-    });
+exports.renderModifiedTopic = function (data, jadeContext) {
+    data.html = this.renderViewToString('topic', jadeContext);
+    return this.sendToAll({ modifiedTopic: data });
 };
 
 // Notifies all clients to remove the current topic and display a message.
-exports.deleteTopic = function (topicId) {
-    var shell = this;
-    return shell.sendToOthers({ deleteTopic: topicId });
+exports.notifyTopicDeleted = function (data) {
+    return this.sendToOthers({ deletedTopic: data });
 };
 
 // Allows in-place addition of new comments.
-exports.newComment = function (topicId, locals) {
-    var shell = this,
-        commentView = shell.renderViewToString('comment', locals);
-    return shell.sendToAll({
-        newComment: {
-            topicId: topicId,
-            html: commentView
-        }
-    });
+exports.renderNewComment = function (data, jadeContext) {
+    data.html = this.renderViewToString('comment', jadeContext);
+    return this.sendToAll({ newComment: data });
 };
 
 // Allows in-place modification of comments.
-exports.modifyComment = function (commentId, locals) {
-    var shell = this,
-        commentView = shell.renderViewToString('comment', locals);
-    return shell.sendToAll({
-        modifyComment: {
-            id: commentId,
-            html: commentView
-        }
-    });
+exports.renderModifiedComment = function (data, jadeContext) {
+    data.html = this.renderViewToString('comment', jadeContext);
+    return this.sendToAll({ modifiedComment: data });
 };
 
 // Removes a deleted comment from all clients' displays.
-exports.deleteComment = function (commentId) {
-    var shell = this;
-    return shell.sendToAll({ deleteComment: commentId });
+exports.removeDeletedComment = function (data) {
+    return this.sendToAll({ deletedComment: data });
 };
 
 // Checks a command's custom roles property to see if the user can access the command.

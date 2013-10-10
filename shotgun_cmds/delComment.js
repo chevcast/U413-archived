@@ -47,7 +47,7 @@ exports.invoke = function (shell, options) {
                             comment.topic.lastCommentDate = prevComment ? prevComment.date : comment.topic.date;
                             comment.topic.save(function (err) {
                                 if (err) return shell.error(err);
-                                shell.deleteComment(options.id);
+                                shell.removeDeletedComment({ id: options.id, commentCount: comment.topic.commentCount });
                                 shell.log("Comment {{0}} was successfully deleted.".format(options.id));
                             });
                         });

@@ -50,7 +50,6 @@ exports.invoke = function(shell, options) {
             if (err) return shell.error(err);
             if (shell.settings.debug) {
                 console.log('New topic {{0}} created by {1}.'.format(newTopic.id, user.username));;
-                console.log(newTopic);
             }
             shell.log("Topic {{0}} created successfully.".format(newTopic.id));
             if (!options.dontShow)

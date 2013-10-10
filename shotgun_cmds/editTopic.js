@@ -49,12 +49,12 @@ exports.invoke = function (shell, options) {
                 if (topic.creator.id != currentUser.id && !currentUser.isModOrAdmin())
                     return shell.error("Topic {{0}} does not belong to you.".format(options.id));
                 if (!options.title) {
-                    shell.multiLine().edit(topic.title);
+                    shell.edit(topic.title);
                     shell.log("Modify topic {{0}} title.".format(options.id));
                     shell.setPrompt('title', 'editTopic', options);
                 }
                 else if (!options.content) {
-                    shell.edit(topic.body);
+                    shell.multiLine().edit(topic.body);
                     shell.log("Modify topic {{0}} content.".format(options.id));
                     shell.setPrompt('content', 'editTopic', options);
                 }
@@ -76,11 +76,16 @@ exports.invoke = function (shell, options) {
                             shell.db.Comment.find({ topic: topic.id }, function (err, comments) {
                                 if (err) return shell.error(err);
                                 if (!options.dontShow)
-                                    shell.modifyTopic(options.id, {
-                                        topic: topic,
-                                        comments: comments,
-                                        moment: require('moment')
-                                    });
+                                    shell.renderModifiedTopic(
+                                        {
+                                            id: options.id
+                                        },
+                                        {
+                                            topic: topic,
+                                            comments: comments,
+                                            moment: require('moment')
+                                        }
+                                    );
                                 shell.log("Topic {{0}} updated successfully.".format(options.id));
                             });
                         });

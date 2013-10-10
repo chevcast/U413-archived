@@ -34,7 +34,7 @@ exports.invoke = function (shell, options) {
         if (err) return shell.error(err);
         shell.db.Comment.where('topic').equals(options.id).remove(function (err) {
             if (err) return shell.error(err);
-            shell.deleteTopic(options.id);
+            shell.notifyTopicDeleted({ id: options.id });
             shell.log("Topic {{0}} was successfully deleted.".format(options.id));
         });
     });

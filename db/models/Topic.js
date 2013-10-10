@@ -1,9 +1,9 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema,
-    autoIncrement = require('mongoose-auto-increment');
+    Schema = mongoose.Schema;
 
 exports.createSchema = function () {
     var topicSchema = new Schema({
+        _id: Number,
         creator: { type: Schema.Types.ObjectId, ref: 'User' },
         title: String,
         body: String,
@@ -14,6 +14,5 @@ exports.createSchema = function () {
         commentCount: { type: Number, default: 0 },
         lastCommentDate: { type: Date, default: Date.now }
     });
-    topicSchema.plugin(autoIncrement, 'Topic');
     return topicSchema;
 };

@@ -44,11 +44,16 @@ exports.invoke = function(shell, options) {
                     comment.topic.lastCommentDate = comment.date;
                     comment.topic.save(function (err) {
                         if (err) return shell.error(err);
-                        shell.newComment(comment.topic.id, {
-                            comment: comment,
-                            moment: require('moment')
-                        });
-                        //shell.log("Comment {{0}} saved successfully.".format(newComment.id));
+                        shell.renderNewComment(
+                            {
+                                topicId: comment.topic.id,
+                                commentCount: comment.topic.commentCount
+                            },
+                            {
+                                comment: comment,
+                                moment: require('moment')
+                            }
+                        );
                     });
                 });
             });
