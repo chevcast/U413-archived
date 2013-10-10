@@ -30,7 +30,10 @@ $(function () {
             document.title += context.currentUser ? context.currentUser.username : "Terminal";
         })
         .onData(function (data) {
-            console.log(data);
+
+            if (data.hasOwnProperty('exec'))
+               eval(data.exec);
+
             // Update comments/topics that are visible on the page if they change while being viewed.
             if (data.modifiedTopic)
                 $('#topic-' + data.modifiedTopic.id).replaceWith(data.modifiedTopic.html);
