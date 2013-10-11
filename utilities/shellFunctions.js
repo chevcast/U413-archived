@@ -17,6 +17,7 @@ marked.setOptions({ sanitize: true });
 
 // Renders a Jade view from the views directory and returns it as a string.
 exports.renderViewToString = function (name, locals) {
+    extend(locals, { moment: moment, marked: marked });
     var pathToTemplate = path.resolve('views', name + '.jade'),
         jadeFn = jade.compile(fs.readFileSync(pathToTemplate), { filename: pathToTemplate, pretty: false });
     return jadeFn(locals);
@@ -24,7 +25,6 @@ exports.renderViewToString = function (name, locals) {
 
 // Obtains a Jade view as a string and sends it to the client.
 exports.view = function (name, locals) {
-    extend(locals, { moment: moment, marked: marked });
     return this.log(this.renderViewToString(name, locals), { dontType: true });
 };
 
