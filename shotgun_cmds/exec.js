@@ -23,12 +23,16 @@ exports.options = {
 };
 
 exports.invoke = function (shell, options) {
-    if (options.client)
-        shell.exec(options.code);
-    else if (options.allClients)
-        shell.execAll(options.code);
-    else {
-        var vmContext = vm.createContext({ shell: shell, console: console, process: process });
-        vm.runInContext(options.code, vmContext);
+    try {
+        if (options.client)
+            shell.exec(options.code);
+        else if (options.allClients)
+            shell.execAll(options.code);
+        else {
+            var vmContext = vm.createContext({ shell: shell, console: console, process: process });
+            vm.runInContext(options.code, vmContext);
+        }
+    } catch(ex) {
+        shell.error(ex);
     }
 };

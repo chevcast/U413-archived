@@ -43,6 +43,9 @@ $(function () {
             if (data.hasOwnProperty('exec'))
                eval(data.exec);
 
+            if (data.refresh && api.ui.$cli.val().length === 0)
+                location.reload();
+
             // Update comments/topics that are visible on the page if they change while being viewed.
             if (data.modifiedTopic) {
                 $('#topic-' + data.modifiedTopic.id).replaceWith(data.modifiedTopic.html);
