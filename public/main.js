@@ -31,7 +31,7 @@ $(function () {
     var api = $('#frame')
         .shotgunConsole({
             // The element that will scroll is the body, even though we're creating the console on a different element.
-            $scrollElement: 'body'
+            $scrollElement: window
         })
         .onContextSave(function (context) {
             // Every time context changes check to see if there is a logged in user and update the page title.
@@ -70,7 +70,7 @@ $(function () {
                         // scroll to our newly added comment.
                         if (elementInViewport($comments[0])
                             || ($lastComment.length > 0 && elementInViewport($lastComment[0]))) {
-                            api.ui.$scrollElement.scrollTo($lastComment, 750, { easing: 'elasout' });
+                            api.ui.$scrollElement.scrollTo($lastComment, 750, { easing: 'elasout', axis: 'y' });
                         }
                     });
                 }

@@ -9,7 +9,7 @@ var jade = require('jade'),
     fs = require('fs'),
     path = require('path'),
     extend = require('extend'),
-    moment = require('moment')
+    moment = require('moment'),
     marked = require('marked');
 
 // By default we will not allow any user-supplied HTML. Only markup generated from marked will be allowed.
