@@ -9,13 +9,18 @@ function elementInViewport(el) {
         );
 }
 
-function highlightSyntax() {
+function parseContent() {
+
+    // Google Code Prettify
     var $code = $('code');
     $code.each(function () {
         var $this = $(this);
         if (!$this.hasClass('prettyprint')) $this.addClass('prettyprint');
     });
     prettyPrint();
+
+    // Make links open in new tab.
+    $('a').attr('target', '_blank');
 }
 
 $(function () {
@@ -49,7 +54,7 @@ $(function () {
             // Update comments/topics that are visible on the page if they change while being viewed.
             if (data.modifiedTopic) {
                 $('#topic-' + data.modifiedTopic.id).replaceWith(data.modifiedTopic.html);
-                highlightSyntax();
+                parseContent();
             }
 
             if (data.deletedTopic)
@@ -64,7 +69,7 @@ $(function () {
                         $comments = $('#comments');
                     $('#commentCount').text(data.newComment.commentCount);
                     $newComment.hide().appendTo($comments).slideDown('fast', function () {
-                        highlightSyntax();
+                        parseContent();
                         // IF:
                         // - the entire comments container is visible in the viewport (meaning little or no comments)
                         // OR
@@ -81,16 +86,16 @@ $(function () {
 
             if (data.modifiedComment) {
                 $('#comment-' + data.modifiedComment.id).replaceWith(data.modifiedComment.html);
-                highlightSyntax();
+                parseContent();
             }
 
             if (data.deletedComment) {
                 $('#commentCount').text(data.deletedComment.commentCount);
-                $('#comment-' + data.deletedComment.id).slideUp('fast', highlightSyntax);
+                $('#comment-' + data.deletedComment.id).slideUp('fast', parseContent);
             }
 
             if (data.line)
-                highlightSyntax();
+                parseContent();
         })
         .execute('initialize');
 });
