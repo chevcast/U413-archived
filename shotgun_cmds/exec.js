@@ -29,7 +29,12 @@ exports.invoke = function (shell, options) {
         else if (options.allClients)
             shell.execAll(options.code);
         else {
-            var vmContext = vm.createContext({ shell: shell, console: console, process: process });
+            var vmContext = vm.createContext({
+                shell: shell,
+                console: console,
+                process: process,
+                require: require
+            });
             vm.runInContext(options.code, vmContext);
         }
     } catch(ex) {
