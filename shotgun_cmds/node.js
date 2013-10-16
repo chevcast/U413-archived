@@ -7,7 +7,7 @@ var fs = require('fs'),
 // Store repl instances in process as it is ok if they get blown away now and then.
 process.repls = [];
 
-exports.roles = 'user';
+exports.roles = 'admin';
 
 exports.description = "Starts a node.js REPL.";
 
