@@ -79,5 +79,5 @@ exports.invoke = function (shell, options) {
         delete options.data;
     }
 
-    shell.setPrompt('data', 'node', {}, "REPL");
+    shell.setPrompt('data', 'repl', {}, "REPL");
 };
