@@ -1,5 +1,3 @@
-var moment = require('moment');
-
 exports.roles = 'user';
 
 exports.description = "Displays the specified topic and all replies.";
