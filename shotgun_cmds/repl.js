@@ -53,11 +53,6 @@ exports.invoke = function (shell, options) {
         // Add the shell instance to the repl context.
         replInstance.context.shell = shell;
 
-        shell.debug("Welcome to the U413 node repl. You can execute arbitrary JavaScript here in a clean environment.");
-        shell.debug("Underscore (_) is a special variable that stores the output of the last statement.");
-        shell.debug("To leave the repl simply type \"cancel\".");
-        shell.log();
-
         var replIO = { input: inputStream, output: outputStream };
         process.repls[socket.id] = replIO;
         socket.on('disconnect', function () {
