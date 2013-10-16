@@ -17,8 +17,8 @@ exports.options = {
 };
 
 exports.invoke = function (shell, options) {
-    var currentUser = shell.getVar('currentUser'),
-        hasRepl = process.repls.hasOwnProperty(currentUser.id);
+    var socket = shell.getVar('socket'),
+        hasRepl = process.repls.hasOwnProperty(socket.id);
 
     // If the user does not have a repl instance stored in process or they are starting the repl with --clean then
     // create a new repl instance.
@@ -34,18 +34,6 @@ exports.invoke = function (shell, options) {
             }
         });
 
-
-        // White-list of global variables the repl will have access to.
-        var allowedGlobals = ['_', 'ArrayBuffer', 'Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array',
-            'Int32Array', 'Uint32Array', 'Float32Array', 'Float64Array', 'DataView', 'Buffer', 'console', 'setTimeout',
-            'clearTimeout', 'setInterval', 'clearInterval'];
-
-        // White-list of repl command that are available.
-        var allowedReplCmds = ['.break', '.clear', '.help'];
-
-        // Remove access to built-in core node modules.
-        repl._builtinLibs = [];
-
         // Start the repl and get reference to the repl instance.
         var replInstance = repl.start({
             prompt: '',
@@ -54,14 +42,14 @@ exports.invoke = function (shell, options) {
             output: outputStream
         });
 
-        // Iterate over the variables in the repl context and the repl commands, then remove any that are not
-        // white-listed.
-        for (var key in replInstance.commands)
-            if (!allowedReplCmds.contains(key))
-                delete replInstance.commands[key];
-        for (var key in replInstance.context)
-            if (!allowedGlobals.contains(key))
-                delete replInstance.context[key];
+        // Override clear command so it also clears the shell display.
+        var clearCmd = replInstance.commands['.clear'],
+            oldAction = clearCmd.action;
+        clearCmd.action = function () {
+            shell.clearDisplay();
+            oldAction.call(this);
+        };
+
         // Add the shell instance to the repl context.
         replInstance.context.shell = shell;
 
@@ -71,11 +59,14 @@ exports.invoke = function (shell, options) {
         shell.log();
 
         var replIO = { input: inputStream, output: outputStream };
-        process.repls[currentUser.id] = replIO;
+        process.repls[socket.id] = replIO;
+        socket.on('disconnect', function () {
+            delete process.repls[socket.id];
+        });
     }
     else if (options.hasOwnProperty('data') && hasRepl) {
         shell.log("> {0}".format(options.data), { dontType: true });
-        process.repls[currentUser.id].input.write(options.data + '\n');
+        process.repls[socket.id].input.write(options.data + '\n');
         delete options.data;
     }
 
