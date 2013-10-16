@@ -7,7 +7,7 @@ var allowedGlobals = ['ArrayBuffer', 'Int8Array', 'Uint8Array', 'Uint8ClampedArr
 
 process.repls = [];
 
-exports.roles = 'admin';
+exports.roles = 'user';
 
 exports.description = "Starts a node.js REPL.";
 
