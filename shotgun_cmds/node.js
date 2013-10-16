@@ -7,7 +7,7 @@ var allowedGlobals = ['ArrayBuffer', 'Int8Array', 'Uint8Array', 'Uint8ClampedArr
 
 process.repls = [];
 
-exports.roles = 'user';
+exports.roles = 'admin';
 
 exports.description = "Starts a node.js REPL.";
 
@@ -24,8 +24,10 @@ exports.options = {
 };
 
 exports.invoke = function (shell, options) {
-    var replIndex = shell.getVar('replIndex');
-    var hasIndex = typeof(replIndex) !== 'undefined';
+    var replIndex = shell.getVar('replIndex'),
+        hasIndex = typeof(replIndex) !== 'undefined',
+        currentUser = shell.getVar('currentUser');
+
     if (!hasIndex || options.clean) {
         var inputStream = new stream.PassThrough(),
             outputStream = new stream.PassThrough();
@@ -37,10 +39,14 @@ exports.invoke = function (shell, options) {
         });
 
         var newRepl = repl.start({ prompt: '', ignoreUndefined: true, input: inputStream, output: outputStream });
-        // Iterate over the variables in the repl context and remove any that are not white-listed.
-        for (var key in newRepl.context)
-            if (!allowedGlobals.contains(key))
-                delete newRepl.context[key];
+        //if (!currentUser.roles.contains('admin')) {
+            //delete newRepl.context.fs;
+            // Iterate over the variables in the repl context and remove any that are not white-listed.
+            for (var key in newRepl.context)
+                if (!allowedGlobals.contains(key))
+                    delete newRepl.context[key];
+            console.log(newRepl.context);
+        //}
 
         var replStreams = { input: inputStream, output: outputStream };
         if (!hasIndex) {

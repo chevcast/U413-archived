@@ -8,5 +8,6 @@ exports.invoke = function(shell) {
         if (err) return shell.error(err);
         shell.log("You were successfully logged out.");
         shell.delVar('currentUser');
+        shell.delVar('replIndex');
     });
 };
