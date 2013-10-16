@@ -18,7 +18,7 @@ var db = require('./db'),
     shellFunctions = require('./utilities/shellFunctions');
 
 // Register prototype helpers.
-require('./utilities/prototypeHelpers');
+require('./utilities/prototypeHelpers')();
 
 // Initialize the database module.
 db.initialize(function (models) {

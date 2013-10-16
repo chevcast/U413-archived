@@ -1,10 +1,8 @@
-var repl = require('repl'),
+var fs = require('fs'),
+    path = require('path'),
+    vm = require('vm'),
+    repl = require('repl'),
     stream = require('stream');
-
-// White-list of global variables the repl will have access to.
-var allowedGlobals = ['ArrayBuffer', 'Int8Array', 'Uint8Array', 'Uint8ClampedArray', 'Int16Array', 'Uint16Array', 'Int32Array',
-    'Uint32Array', 'Float32Array', 'Float64Array', 'DataView', 'Buffer', 'setTimeout', 'setInterval',
-    'clearTimeout', 'clearInterval', 'console', '_'];
 
 // Store repl instances in process as it is ok if they get blown away now and then.
 process.repls = [];
@@ -28,8 +26,7 @@ exports.options = {
 exports.invoke = function (shell, options) {
     var replIndex = shell.getVar('replIndex'),
         hasIndex = typeof(replIndex) !== 'undefined',
-        currentUser = shell.getVar('currentUser'),
-        isAdmin = currentUser.roles.contains('admin');
+        currentUser = shell.getVar('currentUser');
 
     // If the user does not have a repl instance stored in process or they are starting the repl with --clean then
     // create a new repl instance.
@@ -45,23 +42,29 @@ exports.invoke = function (shell, options) {
             }
         });
 
-        // If the user is not an admin then remove access to built-in core node modules.
-        if (!isAdmin)
-            repl._builtinLibs = [];
-        // Start the repl and get reference to the repl instance.
-        var replInstance = repl.start({ prompt: '', ignoreUndefined: true, input: inputStream, output: outputStream });
-        // If the user is not an admin then iterate over the variables in the repl context and remove any that are not
-        // white-listed.
-        if (!isAdmin)
-            for (var key in replInstance.context)
-                if (!allowedGlobals.contains(key))
-                    delete replInstance.context[key];
+        fs.readFile(path.join('utilities', 'replCode.js'), function (err, replCode) {
+            if (err) return shell.error(err);
+            try {
+                vm.runInNewContext(replCode, {
+                    isAdmin: currentUser.roles.contains('admin'),
+                    repl: repl,
+                    inputStream: inputStream,
+                    outputStream: outputStream,
+                    console: console
+                });
+            }
+            catch (ex) {
+                shell.error(ex);
+            }
+        });
 
         var replStreams = { input: inputStream, output: outputStream };
         if (!hasIndex) {
             process.repls.push(replStreams);
             shell.setVar('replIndex', process.repls.length - 1);
-            shell.debug("Welcome to the U413 node repl. You can execute arbitrary JavaScript here in a clean environment. To leave the repl simply type \"cancel\".");
+            shell.debug("Welcome to the U413 node repl. You can execute arbitrary JavaScript here in a clean environment.");
+            shell.debug("Underscore (_) is a special variable that stores the output of the last statement.");
+            shell.debug("To leave the repl simply type \"cancel\".");
             shell.log();
         }
         else
