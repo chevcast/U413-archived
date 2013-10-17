@@ -41,6 +41,11 @@ exports.invoke = function (shell) {
         shell.setCookie("visited", "true", 365);
     }
 
+    // Setup a socket event for execute so we update user data every time the user sends input to the server.
+    shell.getVar('socket').on('execute', function () {
+        shell.updateUserData();
+    });
+
     // Creates a new session document, saves it to the database,
     // then sets a cookie with the session document ID as the value.
     function createSession() {
@@ -60,6 +65,7 @@ exports.invoke = function (shell) {
                 if (session) {
                     if (session.user) {
                         shell.setVar('currentUser', session.user.toObject());
+                        shell.updateUserData();
                         shell.log("You are logged in as {0}.".format(session.user.username));
                     }
                 }

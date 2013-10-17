@@ -32,7 +32,8 @@ exports.invoke = function(shell, options) {
             shell.db.Session.findByIdAndUpdate(sessionId, { $set: { user: user } }, function (err) {
                 if (err) return shell.error(err);
                 shell.setVar('currentUser', user.toObject());
-                shell.log("You are now logged in as {0}.".format(user.username));
+                shell.updateUserData();
+                shell.log("You are logged in as {0}.".format(user.username));
             });
         }
     });

@@ -45,9 +45,6 @@ $(function () {
         })
         .onData(function (data) {
 
-            if (data.hasOwnProperty('exec'))
-               eval(data.exec);
-
             if (data.refresh && api.ui.$cli.val().length === 0)
                 location.reload();
 

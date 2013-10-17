@@ -69,14 +69,15 @@ exports.removeDeletedComment = function (data) {
     return this.sendToAll({ deletedComment: data });
 };
 
-// Sends code to the client to be executed.
-exports.exec = function (code) {
-    return this.send({ exec: code });
-};
-
-// Sends code to all clients to be executed.
-exports.execAll = function (code) {
-    return this.sendToAll({ exec: code });
+// Updates user's lastActiveDate and lastSocketId.
+exports.updateUserData = function () {
+    var shell = this;
+    return shell.getCurrentUser(function (currentUser) {
+        if (!currentUser) return;
+        currentUser.lastActiveDate = Date.now();
+        currentUser.lastSocketId = shell.getVar('socket').id;
+        currentUser.save();
+    });
 };
 
 // Checks a command's custom roles property to see if the user can access the command.

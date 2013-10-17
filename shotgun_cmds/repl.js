@@ -30,7 +30,9 @@ exports.invoke = function (shell, options) {
         // When the output stream receives data, pump that data through the shotgun shell instance.
         outputStream.on('data', function (data) {
             if (data !== null) {
-                shell.debug(data.toString(), { dontType: true });
+                data.toString().split('\n').forEach(function (line) {
+                    shell.debug(line.replace('\n', ''), { dontType: true });
+                });
             }
         });
 

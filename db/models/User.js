@@ -9,6 +9,7 @@ exports.createSchema = function () {
         password: String,
         joinDate: { type: Date, default: Date.now },
         lastActiveDate: { type: Date, default: Date.now},
+        lastSocketId: String,
         roles: [String]
     });
 
