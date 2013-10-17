@@ -17,6 +17,10 @@ exports.options = {
             else
                 return "Tags must be a comma-delimited list with no more than ten items. (Regex: {0})".format(regex);
         }
+    },
+    and: {
+        aliases: 'a',
+        description: "Topic must include all listed tags, rather than any of the listed tags."
     }
 };
 
@@ -25,7 +29,11 @@ exports.invoke = function (shell, options) {
     var query = shell.db.Topic.find({});
     if (options.hasOwnProperty('tags')) {
         var tags = options.tags.toString().toLowerCase().replace(/, /, ',').split(',').unique();
-        query = query.where('tags').in(tags);
+        query = query.where('tags');
+        if (options.and)
+            query = query.all(tags);
+        else
+            query = query.in(tags);
         shell.log('Topics tagged: {0}'.format(tags.join(',')), { bold: true });
         shell.log();
     }
