@@ -46,7 +46,8 @@ exports.invoke = function (shell, options) {
                             comment.topic.commentCount--;
                             comment.topic.lastCommentDate = prevComment ? prevComment.date : comment.topic.date;
                             comment.topic.views.forEach(function (view) {
-                                view.commentCount--;
+                                if (view.commentCount > comment.topic.commentCount)
+                                    view.commentCount = comment.topic.commentCount;
                             });
                             comment.topic.save(function (err) {
                                 if (err) return shell.error(err);
