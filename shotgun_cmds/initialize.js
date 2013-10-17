@@ -41,10 +41,35 @@ exports.invoke = function (shell) {
         shell.setCookie("visited", "true", 365);
     }
 
-    // Setup a socket event for execute so we update user data every time the user sends input to the server.
-    shell.getVar('socket').on('execute', function () {
-        shell.updateUserData();
-    });
+    shell.getVar('socket')
+        // Update user data every time they send data.
+        .on('execute', function () {
+            shell.updateUserData();
+        })
+        // Allow client to update their view data on a topic.
+        .on('updateTopicView', function (topicId, userId) {
+            shell.db.Topic.findById(topicId, function (err, topic) {
+                if (err) return shell.error(err);
+                shell.db.Comment.where('topic').equals(topicId).exec(function (err, comments) {
+                    if (err) return shell.error(err);
+                    var hasViewed = false;
+                    for (var index = 0; index < topic.views.length; index++) {
+                        var view = topic.views[index];
+                        if (view.userId == userId) {
+                            hasViewed = true;
+                            view.commentCount = comments.length;
+                            break;
+                        }
+                    }
+                    if (!hasViewed)
+                        topic.views.push({
+                            userId: userId,
+                            commentCount: comments.length
+                        });
+                    topic.save();
+                });
+            });
+        });
 
     // Creates a new session document, saves it to the database,
     // then sets a cookie with the session document ID as the value.
