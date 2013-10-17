@@ -45,6 +45,9 @@ exports.invoke = function (shell, options) {
                             if (err) return shell.error(err);
                             comment.topic.commentCount--;
                             comment.topic.lastCommentDate = prevComment ? prevComment.date : comment.topic.date;
+                            comment.topic.views.forEach(function (view) {
+                                view.commentCount--;
+                            });
                             comment.topic.save(function (err) {
                                 if (err) return shell.error(err);
                                 shell.removeDeletedComment({ id: options.id, commentCount: comment.topic.commentCount });
