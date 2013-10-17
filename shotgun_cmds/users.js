@@ -19,13 +19,23 @@ exports.invoke = function(shell) {
         shell.log("ACTIVE", { inverted: true });
         users.forEach(function (user) {
             if (user.lastActiveDate >= fifteenMinutesAgo)
-                shell.log(user.username);
+                if (user.roles.contains('admin'))
+                    shell.debug("{0} (admin)".format(user.username));
+                else if (user.roles.contains('mod'))
+                    shell.debug("{0} (mod)".format(user.username));
+                else
+                    shell.log(user.username);
         });
         shell.log();
         shell.log("IDLE", { inverted: true });
         users.forEach(function (user) {
             if (user.lastActiveDate < fifteenMinutesAgo)
-                shell.log(user.username);
+                if (user.roles.contains('admin'))
+                    shell.debug("{0} (admin)".format(user.username));
+                else if (user.roles.contains('mod'))
+                    shell.debug("{0} (mod)".format(user.username));
+                else
+                    shell.log(user.username);
         });
     });
 };
