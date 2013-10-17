@@ -4,7 +4,7 @@ exports.roles = 'user';
 
 exports.description = "Displays all topics or topics with specific tags.";
 
-exports.usage = "[tags]";
+exports.usage = "[tags] [options]";
 
 exports.options = {
     tags: {
