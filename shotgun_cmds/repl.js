@@ -31,7 +31,8 @@ exports.invoke = function (shell, options) {
         outputStream.on('data', function (data) {
             if (data !== null) {
                 data.toString().split('\n').forEach(function (line) {
-                    shell.debug(line.replace('\n', ''), { dontType: true });
+                    if (!/^\s*$/.test(line))
+                        shell.debug(line.replace(/\n/g, ''), { dontType: true });
                 });
             }
         });
@@ -46,10 +47,16 @@ exports.invoke = function (shell, options) {
 
         // Override clear command so it also clears the shell display.
         var clearCmd = replInstance.commands['.clear'],
-            oldAction = clearCmd.action;
+            exitCmd = replInstance.commands['.exit'],
+            oldClearAction = clearCmd.action,
+            oldExitAction = exitCmd.action;
         clearCmd.action = function () {
             shell.clearDisplay();
-            oldAction.call(this);
+            oldClearAction.call(this);
+        };
+        exitCmd.action = function () {
+            shell.clearPrompt();
+            oldExitAction.call(this);
         };
 
         // Add the shell instance to the repl context.
@@ -60,12 +67,14 @@ exports.invoke = function (shell, options) {
         socket.on('disconnect', function () {
             delete process.repls[socket.id];
         });
+        shell.setPrompt('data', 'repl', {}, "REPL");
     }
     else if (options.hasOwnProperty('data') && hasRepl) {
         shell.log("> {0}".format(options.data), { dontType: true });
         process.repls[socket.id].input.write(options.data + '\n');
-        delete options.data;
+        if (options.data !== '.exit') {
+            delete options.data;
+            shell.setPrompt('data', 'repl', {}, "REPL");
+        }
     }
-
-    shell.setPrompt('data', 'repl', {}, "REPL");
 };
