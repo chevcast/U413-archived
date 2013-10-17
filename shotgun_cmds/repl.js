@@ -53,6 +53,7 @@ exports.invoke = function (shell, options) {
         clearCmd.action = function () {
             shell.clearDisplay();
             oldClearAction.call(this);
+            replInstance.context.shell = shell;
         };
         exitCmd.action = function () {
             shell.clearPrompt();
