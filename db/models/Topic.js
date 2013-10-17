@@ -12,6 +12,12 @@ exports.createSchema = function () {
         editedBy: { type: Schema.Types.ObjectId, ref: 'User' },
         tags: [String],
         commentCount: { type: Number, default: 0 },
+        views: [
+            {
+                userId: { type: Schema.Types.ObjectId, ref: 'User' },
+                commentCount: { type: Number, default: 0 }
+            }
+        ],
         lastCommentDate: { type: Date, default: Date.now }
     });
     return topicSchema;

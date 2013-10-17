@@ -75,7 +75,7 @@ $(function () {
                         // scroll to our newly added comment.
                         if (elementInViewport($comments[0])
                             || ($lastComment.length > 0 && elementInViewport($lastComment[0]))) {
-                            api.ui.$scrollElement.scrollTo($lastComment, 750, { easing: 'elasout', axis: 'y' });
+                            api.ui.$scrollElement.scrollTo($newComment, 750, { easing: 'elasout', axis: 'y' });
                         }
                     });
                 }

@@ -38,17 +38,36 @@ exports.invoke = function (shell, options) {
             shell.warn('No results.');
         else {
             topics.forEach(function (topic) {
-                shell.log('{{0}} {1}'.format(topic.id, topic.title), { bold: true, dontType: true });
+                var currentUser = shell.getVar('currentUser'),
+                    topicView;
+                for (var index = 0; index < topic.views.length; index++) {
+                    var view = topic.views[index];
+                    if (view.userId == currentUser._id) {
+                        topicView = view;
+                        break;
+                    }
+                }
+                var newCommentCount = topicView ? topic.commentCount - topicView.commentCount : topic.commentCount;
+                shell.log('{{0}} {1}'.format(topic.id, topic.title), {
+                    bold: true,
+                    dontType: true,
+                    cssClass: newCommentCount === 0 && topicView ? 'dim' : ''
+                });
                 shell.log(
                     '{0} by {1}'.format(moment(topic.date).fromNow(), topic.creator.username),
                     { cssClass: 'sub', dontType: true }
                 );
                 shell.log(topic.tags.join(','), { cssClass: 'sub', dontType: true });
-                if (topic.commentCount > 0)
+                if (topic.commentCount > 0) {
                     shell.log(
-                        '{0} {1}'.format(topic.commentCount, topic.commentCount === 1 ? 'Comment' : 'Comments'),
+                        '{0} {1} ({2} new)'.format(
+                            topic.commentCount,
+                            topic.commentCount === 1 ? 'Comment' : 'Comments',
+                            newCommentCount
+                        ),
                         { cssClass: 'sub', dontType: true }
                     );
+                }
                 shell.log();
             });
         }
