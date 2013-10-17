@@ -6,7 +6,7 @@ exports.options = {
     content: {
         noName: true,
         required: true,
-        prompt: "Please enter your reply.",
+        prompt: "Please enter your reply. (you can use Github-flavored Markdown syntax)",
         multiLinePrompt: true,
         validate: /^.{1,5000}/i,
         hidden: true

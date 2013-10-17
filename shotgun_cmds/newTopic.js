@@ -15,7 +15,7 @@ exports.options = {
     body: {
         required: true,
         noName: true,
-        prompt: "Please type the body of your topic.",
+        prompt: "Please type the body of your topic. (you can use Github-flavored Markdown syntax)",
         multiLinePrompt: true,
         hidden: true,
         validate: /^.{1,10000}/i
