@@ -3,7 +3,7 @@ exports.roles = 'user';
 exports.description = "Displays a list of online users and stats about the number of registered users.";
 
 exports.invoke = function(shell) {
-    var connectedIds = []
+    var connectedIds = [];
     for (var key in shell.io.connected) {
         if (!shell.io.connected.hasOwnProperty(key)) return;
         if (shell.io.connected[key]) connectedIds.push(key);
@@ -37,5 +37,8 @@ exports.invoke = function(shell) {
                 else
                     shell.log(user.username);
         });
+        shell.log();
+        var visitors = connectedIds.length - users.length;
+        shell.log("{0} {1}".format(visitors, visitors === 1 ? "VISITOR" : "VISITORS"), { inverted: true });
     });
 };
