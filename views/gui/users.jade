@@ -1,0 +1,24 @@
+extends layout
+block banner
+    div ONLINE: #{users.length}/#{numUsers} USER#{numUsers === 1 ? "" : "S"} | #{visitors} VISITOR#{visitors === 1 ? "" : "S"}
+block content
+    div(style="display:inline-block;width:49%;vertical-align: top;margin-right:2%;")
+        h2.inverted ACTIVE
+        each user in users
+            if (user.lastActiveDate >= fifteenMinutesAgo)
+                if (user.roles.contains('admin'))
+                    div.debug= "{0} (admin)".format(user.username)
+                else if (user.roles.contains('mod'))
+                    div.debug= "{0} (mod)".format(user.username)
+                else
+                    div.log= user.username
+    div(style="display:inline-block;width:49%;vertical-align: top;")
+        h2.inverted IDLE
+        each user in users
+            if (user.lastActiveDate < fifteenMinutesAgo)
+                if (user.roles.contains('admin'))
+                    div.debug= "{0} (admin)".format(user.username)
+                else if (user.roles.contains('mod'))
+                    div.debug= "{0} (mod)".format(user.username)
+                else
+                    div.log= user.username
