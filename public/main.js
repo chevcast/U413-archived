@@ -53,6 +53,11 @@ $(function () {
             if (data.refresh && api.ui.$cli.val().length === 0)
                 location.reload();
 
+            if (data.hideCli)
+                api.ui.$cliContainer.hide();
+            else if (data.showCli)
+                api.ui.$cliContainer.show();
+
             if (currentUser) {
                 // Update comments/topics that are visible on the page if they change while being viewed.
                 if (data.modifiedTopic) {

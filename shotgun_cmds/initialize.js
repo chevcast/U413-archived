@@ -23,6 +23,9 @@ exports.invoke = function (shell) {
         shell.log(text, lineOptions);
     };
 
+    // Clear display and reset context in case this isn't a page reload.
+    shell.clearDisplay();
+
     var visited = shell.getCookie('visited'),
         sessionId = shell.getCookie('sessionId');
 
@@ -100,6 +103,6 @@ exports.invoke = function (shell) {
     else
         createSession();
 
-    // Display this every time, whether they've visted before or not.
+    // Display this every time, whether they've visited before or not.
     shell.log("Type \"help\" to see what commands are available.");
 };

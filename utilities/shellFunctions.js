@@ -24,8 +24,9 @@ exports.renderViewToString = function (name, locals) {
 };
 
 // Obtains a Jade view as a string and sends it to the client.
-exports.view = function (name, locals) {
-    return this.log(this.renderViewToString(name, locals), { dontType: true });
+exports.view = function (name, locals, options) {
+    extend(options, { dontType: true });
+    return this.log(this.renderViewToString(name, locals), options);
 };
 
 // Retrieves the currently authenticated user.
@@ -111,4 +112,12 @@ exports.canAccessCmd = function (cmdName) {
     }
     else
         return true;
+};
+
+exports.hideCli = function () {
+    this.send({ hideCli: true });
+};
+
+exports.showCli = function () {
+    this.send({ showCli: true });
 };

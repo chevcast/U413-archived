@@ -324,11 +324,13 @@
                 }
 
                 // Scroll to bottom immediately.
-                settings.$scrollElement.scrollTo('100%', 0, { axis: 'y' });
-                // Also attach a handler to images to scroll to bottom again when they're done loading.
-                $display.find('img').load(function () {
+                if (!data.line.options.dontScroll) {
                     settings.$scrollElement.scrollTo('100%', 0, { axis: 'y' });
-                });
+                    // Also attach a handler to images to scroll to bottom again when they're done loading.
+                    $display.find('img').load(function () {
+                        settings.$scrollElement.scrollTo('100%', 0, { axis: 'y' });
+                    });
+                }
             }
             else
                 onComplete();
