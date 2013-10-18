@@ -25,8 +25,10 @@ exports.renderViewToString = function (name, locals) {
 
 // Obtains a Jade view as a string and sends it to the client.
 exports.view = function (name, locals, options) {
-    extend(options, { dontType: true });
-    return this.log(this.renderViewToString(name, locals), options);
+    return this.log(
+        this.renderViewToString(name, locals),
+        extend({ dontType: true }, options)
+    );
 };
 
 // Retrieves the currently authenticated user.

@@ -63,8 +63,7 @@ exports.invoke = function (shell, options) {
         // Add the shell instance to the repl context.
         replInstance.context.shell = shell;
 
-        var replIO = { input: inputStream, output: outputStream };
-        process.repls[socket.id] = replIO;
+        process.repls[socket.id] = { input: inputStream, output: outputStream };
         socket.on('disconnect', function () {
             delete process.repls[socket.id];
         });
