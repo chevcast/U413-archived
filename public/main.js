@@ -56,7 +56,9 @@ $(function () {
             if (data.hideCli)
                 api.ui.$cliContainer.hide();
             else if (data.showCli)
-                api.ui.$cliContainer.show();
+                api.ui.$cliContainer.show(function () {
+                    api.ui.$cli.focus();
+                });
 
             if (currentUser) {
                 // Update comments/topics that are visible on the page if they change while being viewed.
