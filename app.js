@@ -40,8 +40,8 @@ db.initialize(function (models) {
                 response.writeHead(200, { "Content-Type": "text/html" });
                 response.end(jadeFn());
             }
-            else if (request.url === '/style.styl') {
-                var stylusFile = fs.readFileSync(path.resolve('public', 'style.styl'));
+            else if (request.url === '/styles.css') {
+                var stylusFile = fs.readFileSync(path.resolve('public', 'styles.styl'));
                 stylus(stylusFile.toString()).render(function(err, css) {
                     if (err) return console.error(err);
                     response.writeHead(200, { "Content-Type": "text/css" });
