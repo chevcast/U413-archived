@@ -75,4 +75,6 @@ db.initialize(function (models) {
     // Attach shotgun-client to the http server so it can listen for connections.
     shotgunClient.attach(server, shell);
 
+    shell.io.set('transports', ['xhr-polling']);
+
 });
