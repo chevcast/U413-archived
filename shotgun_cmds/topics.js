@@ -29,6 +29,7 @@ exports.options = {
 };
 
 exports.invoke = function (shell, options) {
+    var isGui = shell.getVar('gui');
     shell.clearDisplay();
 
     // Start initial query.
@@ -42,9 +43,10 @@ exports.invoke = function (shell, options) {
             query = query.all(tags);
         else
             query = query.in(tags);
-        shell.log('Topics tagged: {0}'.format(tags.join(',')), { bold: true });
-        shell.log();
-
+        if (!isGui) {
+            shell.log('Topics tagged: {0}'.format(tags.join(',')), { bold: true });
+            shell.log();
+        }
     }
 
     // A function to finish the query, this is necessary because the next query modification requires a callback.
@@ -54,43 +56,47 @@ exports.invoke = function (shell, options) {
             .sort('lastCommentDate')
             .exec(function (err, topics) {
                 if (err) return shell.error(err);
-                if (topics.length === 0)
-                    shell.warn('No results.');
-                else {
-                    topics.forEach(function (topic) {
-                        var currentUser = shell.getVar('currentUser'),
-                            topicView;
-                        for (var index = 0; index < topic.views.length; index++) {
-                            var view = topic.views[index];
-                            if (view.userId == currentUser._id) {
-                                topicView = view;
-                                break;
+                if (!isGui) {
+                    if (topics.length === 0)
+                        shell.warn('No results.');
+                    else {
+                        topics.forEach(function (topic) {
+                            var currentUser = shell.getVar('currentUser'),
+                                topicView;
+                            for (var index = 0; index < topic.views.length; index++) {
+                                var view = topic.views[index];
+                                if (view.userId == currentUser._id) {
+                                    topicView = view;
+                                    break;
+                                }
                             }
-                        }
-                        var newCommentCount = topicView ? topic.commentCount - topicView.commentCount : topic.commentCount;
-                        shell.log('{{0}} {1}'.format(topic.id, topic.title), {
-                            bold: true,
-                            dontType: true,
-                            cssClass: newCommentCount === 0 && topicView ? 'dim' : ''
-                        });
-                        shell.log(
-                            '{0} by {1}'.format(moment(topic.date).fromNow(), topic.creator.username),
-                            { cssClass: 'sub', dontType: true }
-                        );
-                        shell.log(topic.tags.join(','), { cssClass: 'sub', dontType: true });
-                        if (topic.commentCount > 0) {
+                            var newCommentCount = topicView ? topic.commentCount - topicView.commentCount : topic.commentCount;
+                            shell.log('{{0}} {1}'.format(topic.id, topic.title), {
+                                bold: true,
+                                dontType: true,
+                                cssClass: newCommentCount === 0 && topicView ? 'dim' : ''
+                            });
                             shell.log(
-                                '{0} {1} ({2} new)'.format(
-                                    topic.commentCount,
-                                    topic.commentCount === 1 ? 'Comment' : 'Comments',
-                                    newCommentCount
-                                ),
+                                '{0} by {1}'.format(moment(topic.date).fromNow(), topic.creator.username),
                                 { cssClass: 'sub', dontType: true }
                             );
-                        }
-                        shell.log();
-                    });
+                            shell.log(topic.tags.join(','), { cssClass: 'sub', dontType: true });
+                            if (topic.commentCount > 0) {
+                                shell.log(
+                                    '{0} {1} ({2} new)'.format(
+                                        topic.commentCount,
+                                        topic.commentCount === 1 ? 'Comment' : 'Comments',
+                                        newCommentCount
+                                    ),
+                                    { cssClass: 'sub', dontType: true }
+                                );
+                            }
+                            shell.log();
+                        });
+                    }
                 }
+                else {}
+
             });
     }
 
