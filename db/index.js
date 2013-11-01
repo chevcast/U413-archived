@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 module.exports = exports = {
     initialize: function (callback) {
-        var models = {};
+        var db = {};
         var conn = mongoose.createConnection(process.env.CONNECTION_STRING.toString(), {
             server: {
                 socketOptions: { keepAlive: 1 }
@@ -23,10 +23,10 @@ module.exports = exports = {
                     var schema = require(path.join(__dirname, 'models', file)).createSchema();
                     if (schema.paths.hasOwnProperty('_id') && schema.paths._id.instance === 'Number')
                         schema.plugin(autoIncrement.plugin, modelName);
-                    models[modelName] = conn.model(modelName, schema);
+                    db[modelName] = conn.model(modelName, schema);
                 }
             });
-            callback(models);
+            callback(db);
         });
     }
 };

@@ -21,7 +21,7 @@ var db = require('./db'),
 require('./utilities/prototypeHelpers')();
 
 // Initialize the database module.
-db.initialize(function (models) {
+db.initialize(function (db) {
 
     // Initialize node-static, a static file serving module.
     var file = new nodeStatic.Server('./public'),
@@ -70,7 +70,7 @@ db.initialize(function (models) {
 
     // Attach custom functions to the shell so they can be used in our command modules for U413.
     extend(shell, shellFunctions);
-    shell.db = models;
+    shell.db = db;
 
     // Attach shotgun-client to the http server so it can listen for connections.
     shotgunClient.attach(server, shell);
