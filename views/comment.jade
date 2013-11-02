@@ -1,8 +1,8 @@
 div.comment(id = 'comment-' + comment.id)
     div.small {#{comment.id}} #{comment.creator.username}>
     br
-    div.body!= marked(comment.body)
+    div.body!= comment.bodyHtml
     br
-    div.sub= moment(comment.date).fromNow()
+    div.sub= comment.dateFromNow
     if (comment.editedBy)
-        div.sub edited by #{comment.editedBy.username} #{moment(comment.editedDate).fromNow()}
+        div.sub edited by #{comment.editedBy.username} #{comment.editedDateFromNow}

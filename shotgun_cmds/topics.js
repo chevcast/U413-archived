@@ -1,5 +1,3 @@
-var moment = require('moment');
-
 exports.roles = 'user';
 
 exports.description = "Displays all topics or topics with specific tags.";
@@ -77,7 +75,7 @@ exports.invoke = function (shell, options) {
                                 cssClass: newCommentCount === 0 && topicView ? 'dim' : ''
                             });
                             shell.log(
-                                '{0} by {1}'.format(moment(topic.date).fromNow(), topic.creator.username),
+                                '{0} by {1}'.format(topic.dateFromNow, topic.creator.username),
                                 { cssClass: 'sub', dontType: true }
                             );
                             shell.log(topic.tags.join(','), { cssClass: 'sub', dontType: true });

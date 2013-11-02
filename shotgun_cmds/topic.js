@@ -50,7 +50,7 @@ exports.invoke = function(shell, options) {
                         });
                     topic.save(function (err) {
                         if (err) return shell.error(err);
-                        shell.view('topic', { topic: topic, comments: comments, moment: require('moment') });
+                        shell.view('topic', { topic: topic, comments: comments });
                     });
                 });
         });

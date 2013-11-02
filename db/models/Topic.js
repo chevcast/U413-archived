@@ -1,5 +1,7 @@
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    marked = require('marked'),
+    moment = require('moment');
 
 exports.createSchema = function () {
     var topicSchema = new Schema({
@@ -19,6 +21,18 @@ exports.createSchema = function () {
             }
         ],
         lastCommentDate: { type: Date, default: Date.now }
+    });
+    topicSchema.virtual('dateFromNow').get(function () {
+        return moment(this.date).fromNow();
+    });
+    topicSchema.virtual('editedDateFromNow').get(function () {
+        return moment(this.editedDate).fromNow();
+    });
+    topicSchema.virtual('lastCommentDateFromNow').get(function () {
+        return moment(this.lastCommentDate).fromNow();
+    });
+    topicSchema.virtual('bodyHtml').get(function () {
+        return marked(this.body);
     });
     return topicSchema;
 };

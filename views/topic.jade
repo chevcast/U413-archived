@@ -1,12 +1,12 @@
 div.topic(id = 'topic-' + topic.id)
     div {#{topic.id}} #{topic.creator.username}>
     div.title= topic.title
-    div.sub= moment(topic.date).fromNow()
+    div.sub= topic.dateFromNow
     if (topic.editedBy)
-        div.sub edited by #{topic.editedBy.username} #{moment(topic.editedDate).fromNow()}
+        div.sub edited by #{topic.editedBy.username} #{topic.editedDateFromNow}
     div.sub= topic.tags.join(',')
     br
-    div.body!= marked(topic.body)
+    div.body!= topic.bodyHtml
     br
     div.sub
         span#commentCount= comments.length
