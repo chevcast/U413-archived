@@ -14,7 +14,7 @@
     "underscore": "*",
     "extend": "*",
     "async": "*",
-    "mongoose-auto-increment": "*",
+    "mongoose-dbwrapper": "*",
     "stylus": "*",
     "moment": "*",
     "marked": "*"

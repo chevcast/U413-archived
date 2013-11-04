@@ -7,7 +7,7 @@
 */
 
 // Dependencies
-var db = require('./db'),
+var db = require('mongoose-dbwrapper'),
     fs = require('fs'),
     http = require('http'),
     jade = require('jade'),
@@ -21,7 +21,10 @@ var db = require('./db'),
 require('./utilities/prototypeHelpers')();
 
 // Initialize the database module.
-db.initialize(function (db) {
+db.init({
+        connectionString: process.env.CONNECTION_STRING.toString()
+    },
+    function (db) {
 
     // Initialize node-static, a static file serving module.
     var file = new nodeStatic.Server('./public'),
