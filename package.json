@@ -10,11 +10,10 @@
     "shotgun": "*",
     "shotgun-client": "*",
     "node-static": "*",
-    "mongoose": "*",
     "underscore": "*",
     "extend": "*",
     "async": "*",
-    "mongoose-dbwrapper": "*",
+    "mongoose-simpledb": "*",
     "stylus": "*",
     "moment": "*",
     "marked": "*"

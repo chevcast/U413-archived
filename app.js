@@ -7,7 +7,7 @@
 */
 
 // Dependencies
-var dbwrapper = require('mongoose-dbwrapper'),
+var simpledb = require('mongoose-simpledb'),
     fs = require('fs'),
     http = require('http'),
     jade = require('jade'),
@@ -21,9 +21,10 @@ var dbwrapper = require('mongoose-dbwrapper'),
 require('./utilities/prototypeHelpers')();
 
 // Initialize the database module.
-dbwrapper.init(
+simpledb.init(
     { connectionString: process.env.CONNECTION_STRING.toString() },
-    function (db) {
+    function (err, db) {
+        if (err) return console.error(err);
         // Initialize node-static, a static file serving module.
         var file = new nodeStatic.Server('./public'),
             port = process.env.PORT || 3000;
