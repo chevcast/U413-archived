@@ -1,4 +1,4 @@
-var ObjectId = require('mongoose').Schema.Types.ObjectId,
+var ObjectId = require('mongoose-simpledb').Types.ObjectId,
     marked = require('marked'),
     moment = require('moment');
 

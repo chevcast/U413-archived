@@ -20,9 +20,13 @@ var simpledb = require('mongoose-simpledb'),
 // Register prototype helpers.
 require('./utilities/prototypeHelpers')();
 
+// Get connection string.
+var connString = process.env.CONNECTION_STRING;
+if (!connString) connString = 'mongodb://u413-dev:PIrates@ds027758.mongolab.com:27758/u413-dev';
+
 // Initialize the database module.
 simpledb.init(
-    { connectionString: process.env.CONNECTION_STRING.toString() },
+    { connectionString: connString },
     function (err, db) {
         if (err) return console.error(err);
         // Initialize node-static, a static file serving module.
