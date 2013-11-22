@@ -1,6 +1,6 @@
 var moment = require('moment'),
     marked = require('marked'),
-    ObjectId = require('mongoose').Schema.Types.ObjectId;
+    ObjectId = require('mongoose-simpledb').Types.ObjectId;
 
 exports.schema = {
     _id: Number,
