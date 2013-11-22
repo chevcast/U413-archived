@@ -108,6 +108,10 @@ $(function () {
                     $('#commentCount').text(data.deletedComment.commentCount);
                     $('#comment-' + data.deletedComment.id).slideUp('fast', parseContent);
                 }
+
+                if (data.redirect) {
+                    window.location.href = data.redirect;
+                }
             }
 
             if (data.line)

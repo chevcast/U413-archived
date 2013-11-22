@@ -32,7 +32,6 @@ simpledb.init(
         // Initialize node-static, a static file serving module.
         var file = new nodeStatic.Server('./public'),
             port = process.env.PORT || 3000;
-
         // Create basic http server.
         var server = http.createServer(function (request, response) {
             // When the request is finished, serve files.

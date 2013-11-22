@@ -70,6 +70,11 @@ exports.removeDeletedComment = function (data) {
     return this.sendToAll({ deletedComment: data });
 };
 
+// Redirects the user's browser to a specified URL.
+exports.redirect = function (data) {
+    return this.sendToAll({ redirect: data });
+};
+
 // Updates user's lastActiveDate and lastSocketId.
 exports.updateUserData = function () {
     var shell = this;
