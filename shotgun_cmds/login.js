@@ -23,9 +23,7 @@ exports.options = {
 exports.invoke = function(shell, options) {
     shell.db.User.findOne({ username: new RegExp("^" + options.username + "$", "i") }, function (err, user) {
         if (err) return shell.error(err);
-        var valid = false;
-        if (user) valid = user.password === options.password;
-        if (!valid)
+        if (user.password !== options.password)
             shell.error("Username or password incorrect.");
         else {
             var sessionId = shell.getCookie('sessionId');

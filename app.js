@@ -34,6 +34,17 @@ simpledb.init(
             port = process.env.PORT || 3000;
         // Create basic http server.
         var server = http.createServer(function (request, response) {
+            // Add a helper function to the response for easy redirections.
+            response.redirect = function (url) {
+                response.writeHead(301, { 'location': url });
+                response.end();
+            };
+
+            // If the request is for "www." then redirect to bare domain.
+            if (request.url.match(/^www/)) {
+                response.writeHead(301, { 'location': redirect });
+            }
+
             // When the request is finished, serve files.
             request.addListener('end', function () {
                 // If the request is for the root URL then compile the index Jade view and serve it...

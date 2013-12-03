@@ -9,18 +9,17 @@
 exports.hidden = true;
 
 exports.invoke = function (shell) {
-    var lineOptions = {
-        coolTypeOptions: {
-            typeSpeed: 30,
-            delayBeforeType: 0,
-            delayAfterType: 2000
-        }
-    };
 
     // I want all lines in this module to have a specific set of options so I'm creating my own helper.
     // This way I only pass in lineOptions one time instead of for each line.
     shell.type = function (text) {
-        shell.log(text, lineOptions);
+        shell.log(text, {
+            coolTypeOptions: {
+                typeSpeed: 30,
+                delayBeforeType: 0,
+                delayAfterType: 2000
+            }
+        });
     };
 
     // Clear display and reset context in case this isn't a page reload.
