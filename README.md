@@ -1,5 +1,8 @@
-# U413
+U413
+====
 
-[![Dependencies Status](https://gemnasium.com/Chevex/U413.png)](https://gemnasium.com/Chevex/U413)
+## Getting Started
 
-> Project description comging soon. For now check out this video where I [setup the U413 foundation in 5 minutes!](http://youtu.be/cezTraYlMGQ)
+I put together a brief video showing you how to get started with the project.
+
+http://youtu.be/7gvrYSR16ww
