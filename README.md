@@ -1,7 +1,7 @@
 U413
 ====
 
-## Getting Started
+### Getting Started
 
 I put together a brief video showing you how to get started with the project.
 
