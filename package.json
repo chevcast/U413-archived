@@ -6,16 +6,16 @@
     "start": "node app.js"
   },
   "dependencies": {
-    "jade": "*",
-    "shotgun": "*",
-    "shotgun-client": "*",
-    "node-static": "*",
-    "underscore": "*",
-    "extend": "*",
-    "async": "*",
-    "mongoose-simpledb": "*",
-    "stylus": "*",
-    "moment": "*",
-    "marked": "*"
+    "async": "^0.8.0",
+    "extend": "^1.2.1",
+    "jade": "^1.3.1",
+    "marked": "^0.3.2",
+    "moment": "^2.6.0",
+    "mongoose-simpledb": "^2.1.1",
+    "node-static": "^0.7.3",
+    "shotgun": "^5.3.3",
+    "shotgun-client": "^5.5.6",
+    "stylus": "^0.44.0",
+    "underscore": "^1.6.0"
   }
 }
