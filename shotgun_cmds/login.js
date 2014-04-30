@@ -27,7 +27,7 @@ exports.invoke = function(shell, options) {
             shell.error("Username or password incorrect.");
         else {
             var sessionId = shell.getCookie('sessionId');
-            shell.db.Session.findByIdAndUpdate(sessionId, { $set: { user: user } }, function (err) {
+            shell.db.Session.findByIdAndUpdate(sessionId, { $set: { user: user._id } }, function (err) {
                 if (err) return shell.error(err);
                 shell.setVar('currentUser', user.toObject());
                 shell.updateUserData();
