@@ -5,7 +5,7 @@ This is the code for the once "famous" U413.com community. I started [the origin
 
 If you're reading this and you would like to resurrect this project then you are welcome to do so. Just start working on it and submit some pull requests. After you've had a few pull requests merged in I will likely just add you as a contributor to the project so you can actively contribute whenever you wish. This is not a guarantee, but the chances are good if I don't have any issues with your work :)
 
-### Getting Started
+## Getting Started
 
 I put together a brief video showing you how to get started with the project.
 
